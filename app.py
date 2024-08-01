@@ -2,6 +2,7 @@ from fastapi import FastAPI, HTTPException
 from pydantic import BaseModel
 import joblib
 import numpy as np
+import os
 import uvicorn
 
 # Inisialisasi server FastAPI
@@ -41,4 +42,8 @@ async def predict(data: InputData):
         raise HTTPException(status_code=500, detail=e)
 
 if __name__ == "__main__":
-    uvicorn.run(app, host="127.0.0.1", port=8000)
+    port = int(os.getenv("PORT", 8080))
+    host = os.getenv("HOST", "0.0.0.0")
+    print(f"Listening to http://0.0.0.0:{port}")
+    uvicorn.run(app, host=host, port=port, log_level="debug")
+
